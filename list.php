@@ -4,45 +4,47 @@ session_start();
 require_once 'database.php';
 
 if (!isset($_SESSION['logged_id'])) {
-
 	if (isset($_POST['login'])) {
 		
-		$login = filter_input(INPUT_POST, 'login');
-		$password = filter_input(INPUT_POST, 'pass');
+		$login = filter_input(INPUT_POST, 'login' );
+		$password = filter_input(INPUT_POST, 'pass' );
 		
-		//echo $login . " " .$password;
-		
+		// echo $login . " " .$password;	
+		// teraz łączymy się z bazą
+				
 		$userQuery = $db->prepare('SELECT id, password FROM admins WHERE login = :login');
 		$userQuery->bindValue(':login', $login, PDO::PARAM_STR);
 		$userQuery->execute();
 		
-		//echo $userQuery->rowCount();
+		// echo $userQuery->rowCount();
 		
 		$user = $userQuery->fetch();
 		
-		//echo $user['id'] . " " . $user['password'];
+		// echo $user['id'] . " " . $user['password'];
 		
 		if ($user && password_verify($password, $user['password'])) {
+			
 			$_SESSION['logged_id'] = $user['id'];
 			unset($_SESSION['bad_attempt']);
+			
 		} else {
+			
 			$_SESSION['bad_attempt'] = true;
 			header('Location: admin.php');
 			exit();
 		}
-			
-	} else {
-		
-		header('Location: admin.php');
+	
+	}	else { 
+
+		header ('Location: admin.php');
 		exit();
 	}
 }
 
-$usersQuery = $db->query('SELECT * FROM users');
+$usersQuery = $db->query('SELECT * from users');
 $users = $usersQuery->fetchAll();
 
-//print_r($users);
-
+// print_r($users);
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -73,20 +75,20 @@ $users = $usersQuery->fetchAll();
 			
 				<table>
 					<thead>
-						<tr><th colspan="2">Łącznie rekordów: <?= $usersQuery->rowCount() ?></th></tr>
+						<tr><th colspan = "2">Łącznie rekordów: <?= $usersQuery->rowCount() ?></th></tr>
 						<tr><th>ID</th><th>E-mail</th></tr>
 					</thead>
 					<tbody>
 						<?php
 						foreach ($users as $user) {
-							echo "<tr><td>{$user['id']}</td><td>{$user['email']}</td></tr>";
-						}
+							echo "<tr><td>{$user['id']}</td><td>{$user['email']}</td></tr>";							
+						}						
 						?>
 					</tbody>
 				</table>
 				
-				<p><a href="logout.php">Wyloguj się!</a></p>
-				
+				<p><a = href="logout.php">Wyloguj się!</a></p>
+  
             </article>
         </main>
 

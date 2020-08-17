@@ -6,6 +6,7 @@ if (isset($_SESSION['logged_id'])) {
 	exit();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -35,7 +36,6 @@ if (isset($_SESSION['logged_id'])) {
                     <label>Login <input type="text" name="login"></label>
                     <label>Hasło <input type="password" name="pass"></label>
                     <input type="submit" value="Zaloguj się!">
-					
 					<?php
 					if (isset($_SESSION['bad_attempt'])) {
 						echo '<p>Niepoprawny login lub hasło!</p>';
